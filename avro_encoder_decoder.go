@@ -63,13 +63,13 @@ func NewKafkaAvroEncoderAuth(url string, auth *KafkaAvroAuth) *KafkaAvroEncoder 
 	}
 }
 
-func (this *KafkaAvroEncoder) Encode(obj interface{}) ([]byte, error) {
+func (this *KafkaAvroEncoder) Encode(obj interface{}, topic string) ([]byte, error) {
 	if obj == nil {
 		return nil, nil
 	}
 
 	schema := this.getSchema(obj)
-	subject := schema.GetName() + "-value"
+	subject := topic + "-value"
 	id, err := this.schemaRegistry.Register(subject, schema)
 	if err != nil {
 		return nil, err
